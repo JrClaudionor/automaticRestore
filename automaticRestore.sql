@@ -58,13 +58,13 @@ AS
 	) 
 	DECLARE @script               NVARCHAR(max) = 'exec [any_other_database].dbo.spKillProcess ''' 
 												+ @databaseName + '''; ', 
-			@scriptConfig         NVARCHAR(max) = N'	WITH  FILE = 1,   MOVE ''<logical_file_name_in_backup>_Data''  TO ''<MDF FILE PATH>' 
-												+ @databaseName 
-												+ '.MDF''  ,MOVE ''<logical_file_name_in_backup>_Log''  TO ''<LOG FILE PATH>' 
-												+ @databaseName 
-												+ '.LDF''   ,NOUNLOAD ,STATS = 5 ', 
-			@absolutePath VARCHAR(8000) = '<BACKUP REPOSITORY PATH>'
-			@counter        INT = 0 
+		@scriptConfig         NVARCHAR(max) = N'	WITH  FILE = 1,   MOVE ''<logical_file_name_in_backup>_Data''  TO ''<MDF FILE PATH>' 
+											+ @databaseName 
+											+ '.MDF''  ,MOVE ''<logical_file_name_in_backup>_Log''  TO ''<LOG FILE PATH>' 
+											+ @databaseName 
+											+ '.LDF''   ,NOUNLOAD ,STATS = 5 ', 
+		@absolutePath VARCHAR(8000) = '<BACKUP REPOSITORY PATH>'
+		@counter        INT = 0 
 
 
 /*
@@ -84,9 +84,9 @@ AS
            (_filename, 
             a, 
             b) 
-    EXEC xp_dirtree   @absolutePath, 
-					  2, 
-					  1 
+    EXEC xp_dirtree   	@absolutePath, 
+			2, 
+			1 
 
 
 /*
@@ -108,17 +108,17 @@ AS
                       + RIGHT(directory._hour, 3), 
            bkpType = directory.bkpType 
     FROM   (SELECT Replace(
-							LEFT(
-								  RIGHT(
-										 Replace(_filename, '.BAK', '')
-								  , 20)
-							, 10) 
-				   , '_', '-') AS _date, 
+					LEFT(
+						  RIGHT(
+								 Replace(_filename, '.BAK', '')
+						  , 20)
+					, 10) 
+		   , '_', '-') AS _date, 
                    Replace(
-							RIGHT(
-								   Replace(_filename, '.BAK', '')
-							, 9)
-				   , '_', '-') AS _hour, 
+					RIGHT(
+						   Replace(_filename, '.BAK', '')
+					, 9)
+		   , '_', '-') AS _hour, 
                    _filename, 
                    CASE 
                      WHEN Charindex('FULL', _filename) > 0 THEN 'F' 
@@ -144,8 +144,8 @@ AS
 
         OPEN bkpList 
 
-        FETCH next FROM bkpList INTO @_filename, 
-									   @bkpType 
+        FETCH next FROM bkpList INTO 	@_filename, 
+				   	@bkpType 
 
         WHILE @@fetch_status = 0 
           BEGIN 
